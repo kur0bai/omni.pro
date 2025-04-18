@@ -1,34 +1,35 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import * as Yup from "yup";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { validateError } from "@/utils/firebase/auth-codes";
 
-export default function useLoginVM() {
+export default function useRegisterVM() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const initialValues = { email: "", password: "" };
+  const initialValues = { email: "", password: "", confirmPassword: "" };
 
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Email inválido")
-      .required("Este es un campo requerido"),
+      .required("Este campo es requerido"),
     password: Yup.string()
       .min(6, "Mínimo 6 caracteres")
-      .required("Este es un campo requerido"),
+      .required("Este campo es requerido"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), undefined], "Las contraseñas no coinciden")
+      .required("Este campo es requerido"),
   });
 
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsLoading(true);
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
       router.push("/dashboard");
     } catch (error: any) {
       console.error(error.message);
-      const errorMessage = validateError(error);
-      toast.error(errorMessage);
+      toast.error("Ha ocurrido un error en el registro");
     } finally {
       setIsLoading(false);
     }

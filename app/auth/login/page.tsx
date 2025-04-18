@@ -1,5 +1,6 @@
 "use client";
 
+import PasswordInput from "@/components/core/PasswordInput";
 import Spinner from "@/components/core/Spinner";
 import useLoginVM from "@/view-models/login/useLoginVM";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -25,7 +26,7 @@ const LoginPage = () => {
                 name="email"
                 type="email"
                 placeholder="Email"
-                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
               />
               <ErrorMessage
                 name="email"
@@ -35,22 +36,12 @@ const LoginPage = () => {
             </div>
 
             <div>
-              <Field
-                name="password"
-                type="password"
-                placeholder="Contraseña"
-                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200"
-              />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="text-red-500 text-sm"
-              />
+              <PasswordInput name="password" placeholder="Contraseña" />
             </div>
 
             <button
               type="submit"
-              className="text-white rounded-lg duration-300 transition-colors bg-linear-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-400 py-3 hover:shadow-sm shadow-sm font-bold text-center flex items-center justify-center"
+              className="text-white rounded-lg duration-300 transition-colors bg-linear-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-400 py-3 hover:shadow-sm shadow-sm font-bold text-center flex items-center justify-center text-gray-600"
             >
               {isLoading ? <Spinner /> : "Entrar"}
             </button>

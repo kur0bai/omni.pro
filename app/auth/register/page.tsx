@@ -1,77 +1,68 @@
 "use client";
 
+import PasswordInput from "@/components/core/PasswordInput";
+import Spinner from "@/components/core/Spinner";
+import useRegisterVM from "@/view-models/register/useRegisterVM";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
 
 const RegisterPage = () => {
-  const router = useRouter();
-
-  const initialValues = { email: "", password: "" };
-
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Email inválido").required("Requerido"),
-    password: Yup.string().min(6, "Mínimo 6 caracteres").required("Requerido"),
-  });
-
-  const handleSubmit = async (values: typeof initialValues) => {
-    try {
-      await createUserWithEmailAndPassword(auth, values.email, values.password);
-      router.push("/dashboard");
-    } catch (error: any) {
-      console.error(error.message);
-      alert("Error en el registro");
-    }
-  };
-
+  const { initialValues, validationSchema, handleSubmit, isLoading } =
+    useRegisterVM();
   return (
-    <div className="max-w-md mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">Crear Cuenta</h1>
+    <div className="lg:flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="max-w-sm mx-auto p-8 bg-white rounded-lg shadow-sm lg:w-[500px]">
+        <img src={"/logo.png"} alt="Logo" className="w-23 mx-auto mb-4" />
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form className="flex flex-col gap-4">
-          <div>
-            <Field
-              name="email"
-              type="email"
-              placeholder="Email"
-              className="border p-2 w-full"
-            />
-            <ErrorMessage
-              name="email"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          <Form className="flex flex-col gap-4">
+            <div>
+              <Field
+                name="email"
+                type="email"
+                placeholder="Email"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="text-red-500 text-sm"
+              />
+            </div>
 
-          <div>
-            <Field
-              name="password"
-              type="password"
-              placeholder="Contraseña"
-              className="border p-2 w-full"
-            />
-            <ErrorMessage
-              name="password"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
+            <div>
+              <PasswordInput name="password" placeholder="Contraseña" />
+            </div>
 
-          <button
-            type="submit"
-            className="bg-green-500 text-white py-2 rounded"
-          >
-            Registrarme
-          </button>
-        </Form>
-      </Formik>
+            <div>
+              <PasswordInput
+                name="confirmPassword"
+                placeholder="Confirmar la contraseña"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="text-white rounded-lg duration-300 transition-colors bg-linear-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-400 py-3 hover:shadow-sm shadow-sm font-bold text-center flex items-center justify-center text-gray-600"
+            >
+              {isLoading ? <Spinner /> : "Registrarse"}
+            </button>
+            {/* create acc */}
+            <p className="text-sm text-gray-500 text-center">
+              ¿Ya tienes cuenta?{" "}
+            </p>
+            <a
+              href="/auth/login"
+              className="text-gray-500 rounded-lg duration-200 transition-colors hover:bg-gray-100 py-3 hover:shadow-sm text-center bg-white shadow-sm"
+            >
+              Inicia sesión
+            </a>
+          </Form>
+        </Formik>
+      </div>
     </div>
   );
 };
