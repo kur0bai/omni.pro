@@ -13,6 +13,9 @@ import {
 export const createTask = async (
   title: string,
   description: string,
+  dueDate: number,
+  priority: string,
+  status: string,
   uid: string
 ) => {
   const tasksRef = collection(db, "tasks");
@@ -20,6 +23,9 @@ export const createTask = async (
     title,
     description,
     createdAt: Date.now(),
+    dueDate,
+    priority,
+    status,
     uid,
   };
   const docRef = await addDoc(tasksRef, newTask);

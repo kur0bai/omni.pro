@@ -1,32 +1,52 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { getTasks, createTask, deleteTask } from "@/services/task.service";
-import { useRouter } from "next/navigation";
-import { auth } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import { TaskFilters } from "@/components/tasks/TaskFilter";
-import useTasksVM from "@/view-models/tasks/useTasksVM";
-import { CreateTaskForm } from "@/components/tasks/TaskCreateForm";
+import { auth } from "@/lib/firebase";
+import { getTasks, createTask, deleteTask } from "@/services/task.service";
+import { onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
-const Dashboard = () => {
-  const {
-    tasks,
-    router,
-    setTitle,
-    title,
-    description,
-    setDescription,
-    handleCreate,
-    handleDelete,
-    filteredTasks,
-    setPriorityFilter,
-    setStatusFilter,
-    statusFilter,
-    priorityFilter,
-  } = useTasksVM();
+export const Dashboard = () => {
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [userId, setUserId] = useState<string | null>(null);
+  const router = useRouter();
 
-  console.log("Tasks: ", tasks);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserId(user.uid);
+        const fetchedTasks = await getTasks(user.uid);
+        setTasks(fetchedTasks);
+      } else {
+        router.push("/auth/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleCreate = async () => {
+    if (!title || !description) return;
+
+    if (userId) {
+      const newTask = await createTask(title, description, userId);
+      setTasks((prev) => [...prev, newTask]);
+      setTitle("");
+      setDescription("");
+    }
+  };
+
+  const handleDelete = async (taskId: string) => {
+    await deleteTask(taskId);
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
+  };
+
+  const [filteredTasks, setFilteredTasks] = useState<ITask[]>(initialTasks);
+
+  const [priorityFilter, setPriorityFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   return (
     <div className="min-h-screen bg-gray-50 w-full lg:flex lg:flex-row gap-10">
@@ -54,7 +74,7 @@ const Dashboard = () => {
         <div className="max-w-2xl mx-auto py-8 lg:px-auto px-4">
           <h1 className="text-2xl font-bold mb-4">Tus Tareas</h1>
 
-          {/* <div className="mb-6">
+          <div className="mb-6">
             <input
               type="text"
               placeholder="Título"
@@ -74,8 +94,7 @@ const Dashboard = () => {
             >
               Agregar tarea
             </button>
-          </div> */}
-          <CreateTaskForm />
+          </div>
 
           {/* filter */}
           <div>
@@ -87,20 +106,7 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="grid gap-4">
-            {filteredTasks.map((task) => (
-              <div key={task.id} className="border p-4 rounded shadow">
-                <h2 className="font-semibold">{task.title}</h2>
-                <p>Prioridad: {task.priority}</p>
-                <p>Estado: {task.status}</p>
-              </div>
-            ))}
-            {filteredTasks.length === 0 && (
-              <p className="text-gray-500">No hay tareas que coincidan.</p>
-            )}
-          </div>
-
-          {/*  <ul>
+          <ul>
             {tasks.map((task) => (
               <li
                 key={task.id}
@@ -118,11 +124,9 @@ const Dashboard = () => {
                 </button>
               </li>
             ))}
-          </ul> */}
+          </ul>
         </div>
       </div>
     </div>
   );
 };
-
-export default Dashboard;

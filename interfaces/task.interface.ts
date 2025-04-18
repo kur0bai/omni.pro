@@ -1,4 +1,4 @@
-interface Task {
+export interface ITask {
   id: string;
   title: string;
   description: string;
@@ -9,12 +9,12 @@ interface Task {
   priority: TaskPriority;
 }
 
-enum TaskStatus {
+export enum TaskStatus {
   PENDING = "pending",
   COMPLETED = "completed",
 }
 
-enum TaskPriority {
+export enum TaskPriority {
   LOW = "low",
   MEDIUM = "medium",
   HIGH = "high",
