@@ -1,58 +1,76 @@
 "use client";
-import { useState } from "react";
+
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import { useUserStore } from "@/store/userStore";
-import { setCookie } from "nookies";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const LoginPage = () => {
   const router = useRouter();
-  const setUser = useUserStore((state) => state.setUser);
 
-  const handleLogin = async () => {
+  const initialValues = { email: "", password: "" };
+
+  const validationSchema = Yup.object({
+    email: Yup.string().email("Email inválido").required("Requerido"),
+    password: Yup.string().min(6, "Mínimo 6 caracteres").required("Requerido"),
+  });
+
+  const handleSubmit = async (values: typeof initialValues) => {
     try {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      const token = await res.user.getIdToken();
-      setUser(res.user);
-      //Using cookies to save the token ;)
-      setCookie(null, "user-token", token, {
-        maxAge: 60 * 60 * 24,
-        path: "/",
-      });
-
+      await signInWithEmailAndPassword(auth, values.email, values.password);
       router.push("/dashboard");
-    } catch (error) {
-      console.error(error);
-      alert("Error al iniciar sesión");
+    } catch (error: any) {
+      console.error(error.message);
+      alert("Error en el login");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-2xl mb-4">Login</h1>
-      <input
-        className="border p-2 mb-2"
-        type="email"
-        placeholder="Correo"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        className="border p-2 mb-2"
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button
-        onClick={handleLogin}
-        className="bg-blue-500 text-white p-2 rounded"
+    <div className="max-w-md mx-auto p-8">
+      <h1 className="text-2xl font-bold mb-6">Iniciar Sesión</h1>
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
       >
-        Iniciar sesión
-      </button>
+        <Form className="flex flex-col gap-4">
+          <div>
+            <Field
+              name="email"
+              type="email"
+              placeholder="Email"
+              className="border p-2 w-full"
+            />
+            <ErrorMessage
+              name="email"
+              component="div"
+              className="text-red-500 text-sm"
+            />
+          </div>
+
+          <div>
+            <Field
+              name="password"
+              type="password"
+              placeholder="Contraseña"
+              className="border p-2 w-full"
+            />
+            <ErrorMessage
+              name="password"
+              component="div"
+              className="text-red-500 text-sm"
+            />
+          </div>
+
+          <button type="submit" className="bg-blue-500 text-white py-2 rounded">
+            Entrar
+          </button>
+        </Form>
+      </Formik>
     </div>
   );
-}
+};
+
+export default LoginPage;
