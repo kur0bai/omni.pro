@@ -20,7 +20,7 @@ const Dashboard = () => {
         const fetchedTasks = await getTasks(user.uid);
         setTasks(fetchedTasks);
       } else {
-        router.push("/login");
+        router.push("/auth/login");
       }
     });
 
