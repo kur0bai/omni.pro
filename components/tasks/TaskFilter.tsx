@@ -1,11 +1,14 @@
 import { Dispatch, SetStateAction } from "react";
 import { PRIORITY_LIST, STATUS_LIST } from "@/constants/lists";
+import { Plus, PlusCircle } from "lucide-react";
 
 interface TaskFiltersProps {
   priorityFilter: string;
   setPriorityFilter: Dispatch<SetStateAction<string>>;
   statusFilter: string;
   setStatusFilter: Dispatch<SetStateAction<string>>;
+  showAddButton?: boolean;
+  onShowAddButtonClick?: () => void;
 }
 
 export function TaskFilters({
@@ -13,9 +16,11 @@ export function TaskFilters({
   setPriorityFilter,
   statusFilter,
   setStatusFilter,
+  showAddButton = true,
+  onShowAddButtonClick,
 }: TaskFiltersProps) {
   return (
-    <div className="flex gap-4 mb-6">
+    <div className="flex gap-4 mb-6 items-center">
       <div>
         <label>Prioridad: </label>
         <select
@@ -65,6 +70,18 @@ export function TaskFilters({
           ))}
         </select>
       </div>
+
+      {showAddButton && (
+        <div>
+          <button
+            className="hover:text-blue-500 text-gray-500"
+            aria-label="Agregar tarea"
+            onClick={onShowAddButtonClick}
+          >
+            <PlusCircle size={20} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,27 +1,24 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { getTasks, createTask, deleteTask } from "@/services/task.service";
+import {
+  getTasks,
+  createTask,
+  deleteTask,
+  updateTask,
+} from "@/services/task.service";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import { TaskPriority, TaskStatus, ITask } from "@/interfaces/task.interface";
 import toast from "react-hot-toast";
 
-export default function useTasksVM() {
+export default function useTaskDetailVM() {
   const [userId, setUserId] = useState<string | null>(null);
   const [tasks, setTasks] = useState<any[]>([]);
-  //filters functions
-  const [filteredTasks, setFilteredTasks] = useState<ITask[]>([]);
-  const [priorityFilter, setPriorityFilter] = useState<string>("all");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-
-  const [showCreateForm, setShowCreateForm] = useState(false);
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const router = useRouter();
-
   const initialValues = {
     title: "",
     priority: "medium",
@@ -42,7 +39,17 @@ export default function useTasksVM() {
       .min(new Date(), "La fecha debe ser en el futuro"),
   });
 
-  const handleCreate = async (values: any) => {
+  const handleDelete = async (taskId: string) => {
+    try {
+      await deleteTask(taskId);
+      setTasks((prev) => prev.filter((task) => task.id !== taskId));
+      toast.success("Tarea eliminada con éxito");
+    } catch (error) {
+      toast.error("Error al eliminar la tarea");
+    }
+  };
+
+  const handleUpdate = async (values: any) => {
     const { title, description, priority, status, dueDate } = values;
     const userId = auth.currentUser?.uid;
     if (!userId) return;
@@ -50,14 +57,10 @@ export default function useTasksVM() {
 
     if (userId) {
       try {
-        const newTask = await createTask(
-          title,
-          description,
-          dueDate,
-          priority,
-          status,
-          userId
-        );
+        const newTask = await updateTask({
+          taskId: userId,
+          data: { title, description, priority, status, dueDate },
+        });
         setTasks((prev) => [...prev, newTask]);
         setTitle("");
         setDescription("");
@@ -68,52 +71,33 @@ export default function useTasksVM() {
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUserId(user.uid);
-        const fetchedTasks = await getTasks(user.uid);
-        setTasks(fetchedTasks);
-        setFilteredTasks(fetchedTasks);
-      } else {
-        router.push("/auth/login");
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  //When filter changes
-  useEffect(() => {
-    let tempTasks = [...tasks];
-    if (priorityFilter !== "all") {
-      tempTasks = tempTasks.filter((task) => task.priority === priorityFilter);
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "low":
+        return "text-green-600";
+      case "medium":
+        return "text-yellow-600";
+      case "high":
+        return "text-red-600";
+      default:
+        return "text-gray-600";
     }
-    if (statusFilter !== "all") {
-      tempTasks = tempTasks.filter((task) => task.status === statusFilter);
-    }
-    setFilteredTasks(tempTasks);
-  }, [priorityFilter, statusFilter, tasks]);
+  };
 
   return {
     tasks,
-    filteredTasks,
-    handleCreate,
+    handleDelete,
     title,
     setTitle,
     description,
     setDescription,
-    priorityFilter,
-    setPriorityFilter,
-    statusFilter,
-    setStatusFilter,
     userId,
     setUserId,
     setTasks,
     router,
     initialValues,
     validationSchema,
-    setShowCreateForm,
-    showCreateForm,
+    handleUpdate,
+    getPriorityColor,
   };
 }

@@ -4,7 +4,7 @@ export interface ITask {
   description: string;
   createdAt: number;
   uid: string;
-  expiresAt: number;
+  dueDate: number;
   status: TaskStatus;
   priority: TaskPriority;
 }

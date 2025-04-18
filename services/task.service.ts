@@ -10,6 +10,17 @@ import {
   where,
 } from "firebase/firestore";
 
+interface UpdateTaskParams {
+  taskId: string;
+  data: Partial<{
+    title: string;
+    description: string;
+    status: string;
+    priority: string;
+    dueDate: number;
+  }>;
+}
+
 export const createTask = async (
   title: string,
   description: string,
@@ -44,28 +55,13 @@ export const getTasks = async (uid: string) => {
   return tasks;
 };
 
-export const updateTask = async (
-  taskId: string,
-  title: string,
-  description: string,
-  status: string,
-  priority: string
-) => {
+export const updateTask = async ({ taskId, data }: UpdateTaskParams) => {
   const taskDoc = doc(db, "tasks", taskId);
-  await updateDoc(taskDoc, {
-    title,
-    description,
-    status,
-    priority,
-  });
-  const updatedTask = {
+  await updateDoc(taskDoc, data);
+  return {
     id: taskId,
-    title,
-    description,
-    status,
-    priority,
+    ...data,
   };
-  return updatedTask;
 };
 
 export const deleteTask = async (taskId: string) => {

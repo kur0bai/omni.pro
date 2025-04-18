@@ -9,7 +9,7 @@ export function CreateTaskForm() {
   const { initialValues, validationSchema, handleCreate } = useTasksVM();
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4">
+    <div className="bg-white shadow-md rounded-lg px-8 py-8 border border-gray-300">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -23,7 +23,8 @@ export function CreateTaskForm() {
                 id="title"
                 name="title"
                 type="text"
-                className="border p-2 rounded"
+                polaceholder="Título de la tarea"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
               />
               <ErrorMessage
                 name="title"
@@ -39,7 +40,7 @@ export function CreateTaskForm() {
                 id="description"
                 name="description"
                 type="text"
-                className="border p-2 rounded"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
                 placeholder="Descripción de la tarea"
               />
               <ErrorMessage
@@ -55,7 +56,8 @@ export function CreateTaskForm() {
                 as="select"
                 id="priority"
                 name="priority"
-                className="border p-2 rounded"
+                placeholder="Prioridad"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
               >
                 {PRIORITY_LIST.map((priority) => (
                   <option
@@ -80,7 +82,8 @@ export function CreateTaskForm() {
                 as="select"
                 id="status"
                 name="status"
-                className="border p-2 rounded"
+                placeholder="Estado"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
               >
                 {STATUS_LIST.map((priority) => (
                   <option
@@ -105,7 +108,7 @@ export function CreateTaskForm() {
                 id="dueDate"
                 name="dueDate"
                 type="date"
-                className="border p-2 rounded"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
               />
               <ErrorMessage
                 name="dueDate"
