@@ -2,7 +2,9 @@
 
 
 body {
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif; scrollbar-color: #b9b9b9 #f7f7f7;
+ scrollbar-width: thin;
+ 
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -12,3 +14,4 @@ h1, h2, h3, h4, h5, h6 {
 button {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 }
+

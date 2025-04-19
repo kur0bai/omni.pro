@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from "react";
 import { PRIORITY_LIST, STATUS_LIST } from "@/constants/lists";
-import { Plus, PlusCircle } from "lucide-react";
+import { ListFilter, PlusCircle } from "lucide-react";
 import { useTaskStore } from "@/store/tasks.store";
 import { TaskModalMode } from "@/interfaces/task.interface";
 
 interface TaskFiltersProps {
   priorityFilter: string;
-  setPriorityFilter: Dispatch<SetStateAction<string>>;
+  setPriorityFilter: (priority: string) => void;
   statusFilter: string;
-  setStatusFilter: Dispatch<SetStateAction<string>>;
+  setStatusFilter: (statys: string) => void;
   showAddButton?: boolean;
 }
 
@@ -22,7 +22,11 @@ export function TaskFilters({
   const { setShowModal, setMode, clearSelectedTask } = useTaskStore();
 
   return (
-    <div className="flex gap-4 mb-6 items-center">
+    <div className="flex gap-5 mb-6 items-center bg-white p-4 rounded-lg  border border-gray-300">
+      <div>
+        <ListFilter size={20} className="text-gray-500" />
+      </div>
+
       <div>
         <label>Prioridad: </label>
         <select

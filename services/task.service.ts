@@ -44,7 +44,11 @@ export const createTask = async (
 
 export const getTasks = async (uid: string) => {
   const tasksRef = collection(db, "tasks");
-  const q = query(tasksRef, where("uid", "==", uid), orderBy("dueDate", "asc"));
+  const q = query(
+    tasksRef,
+    where("uid", "==", uid),
+    orderBy("dueDate", "desc")
+  );
   const snapshot = await getDocs(q);
 
   const tasks = snapshot.docs.map((doc) => ({

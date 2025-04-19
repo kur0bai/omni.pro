@@ -49,7 +49,6 @@ const Dashboard = () => {
             setPriorityFilter={setPriorityFilter}
             statusFilter={statusFilter}
             setStatusFilter={setStatusFilter}
-            onShowAddButtonClick={() => setShowCreateForm(true)}
           />
 
           {/* tasks */}

@@ -11,7 +11,7 @@ interface TaskCardProps {
 }
 
 export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
-  const { getPriorityColor } = useTaskDetailVM();
+  const { getPriorityColor, getStatusIcon } = useTaskDetailVM();
   const { handleDelete } = useTasksVM();
   const { setSelectedTask, clearSelectedTask, setMode, setShowModal } =
     useTaskStore();
@@ -45,19 +45,37 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
 
       <div className="flex flex-row w-full items-center gap-5 mb-2">
         <img src={"/logo.png"} alt="Logo" className="w-12" />{" "}
-        <h2 className="font-semibold capitalize">{task.title}</h2>
+        <h2 className="font-semibold">{task.title}</h2>
       </div>
 
       <hr className="text-gray-100" />
 
-      <div className="my-4">
+      <div className="my-2">
         <p className="text-gray-600">{task.description}</p>
       </div>
 
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-gray-600 flex flex-col gap-1 border-t border-gray-100 pt-4">
         <p>
-          Fecha de expiración:{" "}
-          <strong>{new Date(task.dueDate).toLocaleDateString()}</strong>
+          Creada en:{" "}
+          <strong className="capitalize">
+            {new Date(task.createdAt).toLocaleDateString("es-ES", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </strong>
+        </p>
+        <p>
+          Expira en:{" "}
+          <strong className="capitalize">
+            {new Date(task.dueDate).toLocaleDateString("es-ES", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </strong>
         </p>
         <p>
           Prioridad:{" "}
@@ -66,8 +84,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
               ?.label ?? task.priority}
           </strong>
         </p>
-        <p>
-          Estado:{" "}
+        <p className="flex flex-row items-center gap-1">
+          Estado: {getStatusIcon(task.status)}
           <strong>
             {STATUS_LIST.find((status) => status.value == task.status)?.label ??
               task.status}

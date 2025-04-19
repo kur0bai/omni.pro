@@ -6,6 +6,7 @@ import { PRIORITY_LIST, STATUS_LIST } from "@/constants/lists";
 import Spinner from "../core/Spinner";
 import { useTaskStore } from "@/store/tasks.store";
 import { TaskModalMode } from "@/interfaces/task.interface";
+import { X } from "lucide-react";
 export function CreateTaskForm() {
   const {
     initialValues,
@@ -16,7 +17,7 @@ export function CreateTaskForm() {
     formikRef,
   } = useTasksVM();
 
-  const { mode } = useTaskStore();
+  const { mode, setShowModal } = useTaskStore();
 
   return (
     <div className="bg-white shadow-md rounded-lg px-8 py-8 border border-gray-300">
@@ -27,10 +28,20 @@ export function CreateTaskForm() {
         innerRef={formikRef}
       >
         {() => (
-          <Form className="grid gap-4">
+          <Form className="grid gap-4 relative">
+            {/* header */}
             <h3 className="font-bold text-2xl">
               {mode == TaskModalMode.EDIT ? "Actualizar" : "Crear"} tarea
             </h3>
+            <button
+              className="absolute top-2 right-4 text-gray-400 hover:text-gray-600 duration-300"
+              type="button"
+              onClick={() => setShowModal(false)}
+            >
+              <X size={20} />
+            </button>
+
+            {/* content */}
             <div className="flex flex-col">
               <label htmlFor="title">Título</label>
               <Field
@@ -139,9 +150,9 @@ export function CreateTaskForm() {
               {isLoading ? (
                 <Spinner />
               ) : mode == "edit" ? (
-                "Actualizar Tarea"
+                "Actualizar tarea"
               ) : (
-                "Crear Tarea"
+                "Crear tarea"
               )}
             </button>
           </Form>
