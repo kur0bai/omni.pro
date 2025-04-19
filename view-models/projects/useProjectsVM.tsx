@@ -46,7 +46,7 @@ export default function useProjectsCreateVM() {
           toast.success("Proyecto actualizado");
         } else {
           await createProject(name, userId);
-          toast.success("Proyecto creado:");
+          toast.success("Proyecto creado");
         }
         fetchProjects();
         clearSelectedProject();
