@@ -1,6 +1,4 @@
-import { auth } from "@/lib/firebase";
 import { useProjectsStore } from "@/store/projects.store";
-import { useProjectsAutocomplete } from "@/view-models/projects/useProjectsAutocompleteVM";
 import React from "react";
 
 export const ProjectAutoComplete = () => {
