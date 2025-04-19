@@ -62,6 +62,8 @@ The project is already deployed in Vercel and in production. However, you can re
 
 However, I will provide test users in case you encounter problems with registration.
 
+Using push notifications to notice about the expiring tasks is a good idea but I thought could be out of my control using firebase for the payment but If I have the time I'll check it and add it to the project :D
+
 ![enter image description here](https://i.imgur.com/8dW8R7Y.png)
 
 ### Thanks!
