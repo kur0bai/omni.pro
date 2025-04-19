@@ -8,17 +8,16 @@ import {
   doc,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
 
 interface UpdateTaskParams {
   taskId: string;
-  data: Partial<{
-    title: string;
-    description: string;
-    status: string;
-    priority: string;
-    dueDate: number;
-  }>;
+  title?: string;
+  description?: string;
+  status?: string;
+  priority?: string;
+  dueDate?: number;
 }
 
 export const createTask = async (
@@ -45,7 +44,7 @@ export const createTask = async (
 
 export const getTasks = async (uid: string) => {
   const tasksRef = collection(db, "tasks");
-  const q = query(tasksRef, where("uid", "==", uid));
+  const q = query(tasksRef, where("uid", "==", uid), orderBy("dueDate", "asc"));
   const snapshot = await getDocs(q);
 
   const tasks = snapshot.docs.map((doc) => ({
@@ -55,13 +54,36 @@ export const getTasks = async (uid: string) => {
   return tasks;
 };
 
-export const updateTask = async ({ taskId, data }: UpdateTaskParams) => {
+export const updateTask = async ({
+  taskId,
+  title,
+  description,
+  status,
+  priority,
+  dueDate,
+}: UpdateTaskParams) => {
   const taskDoc = doc(db, "tasks", taskId);
-  await updateDoc(taskDoc, data);
-  return {
+
+  const updateData: Partial<Omit<UpdateTaskParams, "taskId">> = {};
+
+  if (title !== undefined) updateData.title = title;
+  if (description !== undefined) updateData.description = description;
+  if (status !== undefined) updateData.status = status;
+  if (priority !== undefined) updateData.priority = priority;
+  if (dueDate !== undefined) updateData.dueDate = dueDate;
+
+  if (Object.keys(updateData).length === 0) {
+    throw new Error("No fields provided for update.");
+  }
+
+  await updateDoc(taskDoc, updateData);
+
+  const updatedTask = {
     id: taskId,
-    ...data,
+    ...updateData,
   };
+
+  return updatedTask;
 };
 
 export const deleteTask = async (taskId: string) => {

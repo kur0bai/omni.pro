@@ -19,3 +19,8 @@ export enum TaskPriority {
   MEDIUM = "medium",
   HIGH = "high",
 }
+
+export enum TaskModalMode {
+  CREATE = "create",
+  EDIT = "edit",
+}

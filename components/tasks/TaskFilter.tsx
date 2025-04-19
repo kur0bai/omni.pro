@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import { PRIORITY_LIST, STATUS_LIST } from "@/constants/lists";
 import { Plus, PlusCircle } from "lucide-react";
+import { useTaskStore } from "@/store/tasks.store";
+import { TaskModalMode } from "@/interfaces/task.interface";
 
 interface TaskFiltersProps {
   priorityFilter: string;
@@ -8,7 +10,6 @@ interface TaskFiltersProps {
   statusFilter: string;
   setStatusFilter: Dispatch<SetStateAction<string>>;
   showAddButton?: boolean;
-  onShowAddButtonClick?: () => void;
 }
 
 export function TaskFilters({
@@ -17,8 +18,9 @@ export function TaskFilters({
   statusFilter,
   setStatusFilter,
   showAddButton = true,
-  onShowAddButtonClick,
 }: TaskFiltersProps) {
+  const { setShowModal, setMode, clearSelectedTask } = useTaskStore();
+
   return (
     <div className="flex gap-4 mb-6 items-center">
       <div>
@@ -74,9 +76,13 @@ export function TaskFilters({
       {showAddButton && (
         <div>
           <button
-            className="hover:text-blue-500 text-gray-500"
+            className="py-2 px-4 rounded-lg text-white flex items-center gap-2 bg-cyan-600 hover:bg-blue-500 duration-300 hover:shadow-sm"
             aria-label="Agregar tarea"
-            onClick={onShowAddButtonClick}
+            onClick={() => {
+              setShowModal(true);
+              setMode(TaskModalMode.CREATE);
+              clearSelectedTask();
+            }}
           >
             <PlusCircle size={20} />
           </button>

@@ -1,16 +1,20 @@
 import { PRIORITY_LIST, STATUS_LIST } from "@/constants/lists";
-import { ITask } from "@/interfaces/task.interface";
+import { ITask, TaskModalMode } from "@/interfaces/task.interface";
 import React from "react";
 import { Pencil, Trash } from "lucide-react";
 import useTaskDetailVM from "@/view-models/tasks/useTaskDetailVM";
+import { useTaskStore } from "@/store/tasks.store";
+import useTasksVM from "@/view-models/tasks/useTasksVM";
 
 interface TaskCardProps {
   task: ITask;
 }
 
 export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
-  const { getPriorityColor, handleDelete } = useTaskDetailVM();
-
+  const { getPriorityColor } = useTaskDetailVM();
+  const { handleDelete } = useTasksVM();
+  const { setSelectedTask, clearSelectedTask, setMode, setShowModal } =
+    useTaskStore();
   return (
     <div
       key={task.id}
@@ -20,7 +24,12 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
       <div className="">
         <div className="flex flex-row justify-end gap-2">
           <button
-            onClick={() => {}}
+            onClick={() => {
+              clearSelectedTask();
+              setSelectedTask(task);
+              setMode(TaskModalMode.EDIT);
+              setShowModal(true);
+            }}
             className="text-gray-500 hover:text-gray-700"
           >
             <Pencil size={20} />

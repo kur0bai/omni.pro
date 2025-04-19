@@ -4,26 +4,40 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import useTasksVM from "@/view-models/tasks/useTasksVM";
 import { PRIORITY_LIST, STATUS_LIST } from "@/constants/lists";
 import Spinner from "../core/Spinner";
-
+import { useTaskStore } from "@/store/tasks.store";
+import { TaskModalMode } from "@/interfaces/task.interface";
 export function CreateTaskForm() {
-  const { initialValues, validationSchema, handleCreate } = useTasksVM();
+  const {
+    initialValues,
+    validationSchema,
+    handleSubmit,
+    selectedTask,
+    isLoading,
+    formikRef,
+  } = useTasksVM();
+
+  const { mode } = useTaskStore();
 
   return (
     <div className="bg-white shadow-md rounded-lg px-8 py-8 border border-gray-300">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleCreate}
+        onSubmit={handleSubmit}
+        innerRef={formikRef}
       >
-        {({ isSubmitting }) => (
+        {() => (
           <Form className="grid gap-4">
+            <h3 className="font-bold text-2xl">
+              {mode == TaskModalMode.EDIT ? "Actualizar" : "Crear"} tarea
+            </h3>
             <div className="flex flex-col">
               <label htmlFor="title">Título</label>
               <Field
                 id="title"
                 name="title"
                 type="text"
-                polaceholder="Título de la tarea"
+                placeholder="Título de la tarea"
                 className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
               />
               <ErrorMessage
@@ -120,9 +134,15 @@ export function CreateTaskForm() {
             <button
               type="submit"
               className="text-white rounded-lg duration-300 transition-colors bg-linear-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-400 py-3 hover:shadow-sm shadow-sm font-bold text-center flex items-center justify-center text-gray-600"
-              disabled={isSubmitting}
+              disabled={isLoading}
             >
-              {isSubmitting ? <Spinner /> : "Crear Tarea"}
+              {isLoading ? (
+                <Spinner />
+              ) : mode == "edit" ? (
+                "Actualizar Tarea"
+              ) : (
+                "Crear Tarea"
+              )}
             </button>
           </Form>
         )}

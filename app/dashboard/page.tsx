@@ -1,14 +1,10 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { getTasks, createTask, deleteTask } from "@/services/task.service";
-import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import { TaskFilters } from "@/components/tasks/TaskFilter";
 import useTasksVM from "@/view-models/tasks/useTasksVM";
 import { CreateTaskForm } from "@/components/tasks/TaskCreateForm";
 import { TaskCard } from "@/components/tasks/TaskCard";
+import { useTaskStore } from "@/store/tasks.store";
 
 const Dashboard = () => {
   const {
@@ -18,9 +14,10 @@ const Dashboard = () => {
     setStatusFilter,
     statusFilter,
     priorityFilter,
-    showCreateForm,
     setShowCreateForm,
   } = useTasksVM();
+
+  const { mode, showModal } = useTaskStore();
 
   return (
     <div className="min-h-screen flex">
@@ -58,7 +55,7 @@ const Dashboard = () => {
           {/* tasks */}
           <div className="flex flex-col lg:flex-row gap-6 mt-6">
             {/* task list */}
-            <div className="flex-1 grid gap-4 max-h-[80vh] overflow-y-auto">
+            <div className="flex-1 grid gap-4 max-h-[70vh] overflow-y-auto">
               {filteredTasks.map((task) => (
                 <TaskCard task={task} key={task.id} />
               ))}
@@ -68,7 +65,7 @@ const Dashboard = () => {
             </div>
 
             {/* dorm */}
-            {showCreateForm && (
+            {showModal && (
               <div className="w-full lg:w-[400px]">
                 <CreateTaskForm />
               </div>
