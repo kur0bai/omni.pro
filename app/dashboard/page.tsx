@@ -15,15 +15,14 @@ const Dashboard = () => {
     setStatusFilter,
     statusFilter,
     priorityFilter,
-    setShowCreateForm,
   } = useTasksVM();
 
-  const { mode, showModal } = useTaskStore();
+  const { showModal } = useTaskStore();
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* side */}
-      <div className="w-[20%] min-w-[220px] h-screen bg-white border-r border-gray-100 shadow-sm fixed flex flex-col items-center justify-center px-4">
+      <div className="w-full lg:w-[20%] min-w-[220px] h-[300px] lg:h-screen bg-white border-r border-gray-100 shadow-sm block lg:fixed flex flex-col items-center justify-center px-4 lg:py-auto py-2">
         <img src={"/logo.png"} alt="Logo" className="w-24 mb-4" />
         <h1 className="text-lg font-bold">Bienvenido</h1>
         <p className="text-gray-500 text-center">Administra tus tareas aquí</p>
@@ -40,7 +39,7 @@ const Dashboard = () => {
       </div>
 
       {/* main content */}
-      <div className="flex-1 ml-[20%] min-h-screen bg-gray-50 p-8">
+      <div className="w-full flex-1 lg:ml-[20%] min-h-screen bg-gray-50 p-8">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-2xl font-bold mb-6">Tus Tareas</h1>
 
@@ -57,6 +56,12 @@ const Dashboard = () => {
 
           {/* tasks */}
           <div className="flex flex-col lg:flex-row gap-6 mt-6">
+            {/* from */}
+            {showModal && (
+              <div className="w-full lg:w-[400px]">
+                <CreateTaskForm />
+              </div>
+            )}
             {/* task list */}
             <div className="flex-1 grid gap-4 max-h-[70vh] overflow-y-auto">
               {filteredTasks.map((task) => (
@@ -66,13 +71,6 @@ const Dashboard = () => {
                 <p className="text-gray-500">No hay tareas que coincidan.</p>
               )}
             </div>
-
-            {/* from */}
-            {showModal && (
-              <div className="w-full lg:w-[400px]">
-                <CreateTaskForm />
-              </div>
-            )}
           </div>
         </div>
       </div>

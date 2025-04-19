@@ -80,7 +80,7 @@ export function TaskFilters({
       {showAddButton && (
         <div>
           <button
-            className="py-2 px-4 rounded-lg text-white flex items-center gap-2 bg-cyan-600 hover:bg-blue-500 duration-300 hover:shadow-sm"
+            className="px-4 py-4 lg:py-2 lg:px-4 rounded-lg text-white flex items-center gap-2 bg-cyan-600 hover:bg-blue-500 duration-300 hover:shadow-sm shadow-md"
             aria-label="Agregar tarea"
             onClick={() => {
               setShowModal(true);

@@ -18,7 +18,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
   return (
     <div
       key={task.id}
-      className="border border-gray-300 bg-white px-4 py-4 rounded-lg shadow-sm lg:max-w-[500px] flex flex-col"
+      className="border border-gray-300 bg-white px-4 py-4 rounded-lg shadow-sm lg:max-w-full flex flex-col"
     >
       {/* actions buttons */}
       <div className="">
