@@ -8,11 +8,10 @@ import {
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
-import { TaskPriority, TaskStatus, ITask } from "@/interfaces/task.interface";
+import { TaskPriority, TaskStatus } from "@/interfaces/task.interface";
 import toast from "react-hot-toast";
 import { useTaskStore } from "@/store/tasks.store";
 import { FormikProps } from "formik";
-import { Clock } from "lucide-react";
 
 export default function useTasksVM() {
   const {

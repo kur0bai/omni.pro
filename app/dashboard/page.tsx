@@ -5,6 +5,7 @@ import useTasksVM from "@/view-models/tasks/useTasksVM";
 import { CreateTaskForm } from "@/components/tasks/TaskCreateForm";
 import { TaskCard } from "@/components/tasks/TaskCard";
 import { useTaskStore } from "@/store/tasks.store";
+import { ProjectsPanel } from "@/components/projects/ProjectsPanel";
 
 const Dashboard = () => {
   const {
@@ -43,7 +44,10 @@ const Dashboard = () => {
         <div className="max-w-5xl mx-auto">
           <h1 className="text-2xl font-bold mb-6">Tus Tareas</h1>
 
-          {/* filters */}
+          {/* projects */}
+          <ProjectsPanel />
+
+          {/* task filters */}
           <TaskFilters
             priorityFilter={priorityFilter}
             setPriorityFilter={setPriorityFilter}
@@ -63,7 +67,7 @@ const Dashboard = () => {
               )}
             </div>
 
-            {/* dorm */}
+            {/* from */}
             {showModal && (
               <div className="w-full lg:w-[400px]">
                 <CreateTaskForm />

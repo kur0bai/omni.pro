@@ -1,11 +1,14 @@
 import * as React from "react";
-const Spinner = () => (
+interface Props {
+  className?: string;
+}
+const Spinner: React.FC<Props> = ({ className }) => (
   <svg
     width={24}
     height={24}
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
-    className="self-center fill-white"
+    className={className ?? "self-center fill-white"}
   >
     <style>
       {
