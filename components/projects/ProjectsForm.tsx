@@ -3,6 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import Spinner from "../core/Spinner";
 import { Save, Trash } from "lucide-react";
+import { useProjectsStore } from "@/store/projects.store";
 
 export const ProjectsCreate = () => {
   const {
@@ -12,6 +13,7 @@ export const ProjectsCreate = () => {
     isLoading,
     handleDelete,
   } = useProjectsCreateVM();
+  const selectedProject = useProjectsStore((state) => state.selectedProject);
   return (
     <div>
       <Formik
@@ -45,13 +47,15 @@ export const ProjectsCreate = () => {
                       />
                     )}
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => handleDelete()}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <Trash size={20} />
-                  </button>
+                  {selectedProject && (
+                    <button
+                      type="button"
+                      onClick={() => handleDelete()}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <Trash size={20} />
+                    </button>
+                  )}
                 </div>
                 <div className="w-full">
                   <ErrorMessage

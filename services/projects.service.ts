@@ -1,4 +1,4 @@
-import { projectCollection } from "@/constants/collections";
+import { projectCollection, taskCollection } from "@/constants/collections";
 import { db } from "@/lib/firebase";
 import {
   collection,
@@ -9,7 +9,6 @@ import {
   doc,
   query,
   where,
-  orderBy,
 } from "firebase/firestore";
 
 export const getProjects = async (uid: string) => {
@@ -53,11 +52,20 @@ export const updateProject = async (id: string, name: string) => {
 
 export const deleteProject = async (id: string) => {
   const projectRef = doc(db, projectCollection, id);
+  const tasksRef = collection(db, taskCollection);
 
   try {
+    //Delete project with all its tasks jeje
+    const q = query(tasksRef, where("projectId", "==", id));
+    const snapshot = await getDocs(q);
+    const deleteTasksPromises = snapshot.docs.map((taskDoc) =>
+      deleteDoc(doc(db, taskCollection, taskDoc.id))
+    );
+    await Promise.all(deleteTasksPromises);
     await deleteDoc(projectRef);
+
     return id;
   } catch (error) {
-    throw new Error(`Error al eliminar el proyecto: ${error}`);
+    throw new Error(`Error al eliminar el proyecto y sus tareas: ${error}`);
   }
 };

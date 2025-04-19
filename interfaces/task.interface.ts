@@ -7,6 +7,7 @@ export interface ITask {
   dueDate: number;
   status: TaskStatus;
   priority: TaskPriority;
+  projectId: string;
 }
 
 export enum TaskStatus {

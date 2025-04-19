@@ -12,6 +12,7 @@ import { TaskPriority, TaskStatus } from "@/interfaces/task.interface";
 import toast from "react-hot-toast";
 import { useTaskStore } from "@/store/tasks.store";
 import { FormikProps } from "formik";
+import { useProjectsStore } from "@/store/projects.store";
 
 export default function useTasksVM() {
   const {
@@ -26,11 +27,13 @@ export default function useTasksVM() {
     setIsLoading,
     setPriorityFilter,
     setStatusFilter,
+    setShowModal,
     mode,
   } = useTaskStore();
 
+  const { selectedProject } = useProjectsStore();
+
   const [userId, setUserId] = useState<string | null>(null);
-  const [showCreateForm, setShowCreateForm] = useState(false);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -65,13 +68,26 @@ export default function useTasksVM() {
     const userId = auth.currentUser?.uid;
     if (!userId) return;
     if (!title || !description || !priority || !status || !dueDate) return;
+    if (!selectedProject) {
+      toast.error("Selecciona un proyecto");
+      return;
+    }
 
     if (userId) {
       try {
         setIsLoading(true);
-        await createTask(title, description, dueDate, priority, status, userId);
+        await createTask(
+          title,
+          description,
+          dueDate,
+          priority,
+          status,
+          userId,
+          selectedProject?.id || ""
+        );
         fetchTasks(userId);
         toast.success("Tarea creada con éxito");
+        setShowModal(false);
       } catch (error) {
         toast.error("Error al crear la tarea");
       } finally {
@@ -98,6 +114,7 @@ export default function useTasksVM() {
         });
         fetchTasks(userId);
         toast.success("Tarea actualizada con éxito");
+        setShowModal(false);
       } catch (error) {
         toast.error("Error al actualizar la tarea");
       } finally {
@@ -146,7 +163,7 @@ export default function useTasksVM() {
   const fetchTasks = async (uid: string) => {
     setIsLoading(true);
     try {
-      const fetchedTasks = await getTasks(uid);
+      const fetchedTasks = await getTasks(uid, selectedProject?.id ?? "");
       setTasks(fetchedTasks);
       applyFilters(fetchedTasks);
     } finally {
@@ -203,6 +220,15 @@ export default function useTasksVM() {
     syncFormWithSelectedTask();
   }, [selectedTask, mode]);
 
+  useEffect(() => {
+    if (selectedProject) {
+      const userId = auth.currentUser?.uid;
+      if (userId) {
+        fetchTasks(userId);
+      }
+    }
+  }, [selectedProject]);
+
   return {
     tasks,
     filteredTasks,
@@ -221,8 +247,6 @@ export default function useTasksVM() {
     router,
     initialValues,
     validationSchema,
-    setShowCreateForm,
-    showCreateForm,
     handleSubmit,
     selectedTask,
     handleDelete,

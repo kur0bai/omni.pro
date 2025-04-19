@@ -6,6 +6,7 @@ import {
   updateProject,
 } from "@/services/projects.service";
 import { useProjectsStore } from "@/store/projects.store";
+import { useTaskStore } from "@/store/tasks.store";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
@@ -13,6 +14,8 @@ import * as Yup from "yup";
 export default function useProjectsCreateVM() {
   const { selectedProject, setProjects, clearSelectedProject } =
     useProjectsStore();
+
+  const setTasks = useTaskStore((state) => state.setTasks);
 
   const initialValues = {
     name: selectedProject?.name || "",
@@ -67,6 +70,7 @@ export default function useProjectsCreateVM() {
         setIsLoading(true);
         await deleteProject(selectedProject.id);
         toast.success("Proyecto eliminado");
+        setTasks([]);
         fetchProjects();
         clearSelectedProject();
       } catch (error) {

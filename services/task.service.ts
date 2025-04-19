@@ -26,7 +26,8 @@ export const createTask = async (
   dueDate: number,
   priority: string,
   status: string,
-  uid: string
+  uid: string,
+  projectId: string
 ) => {
   const tasksRef = collection(db, "tasks");
   const newTask = {
@@ -37,16 +38,18 @@ export const createTask = async (
     priority,
     status,
     uid,
+    projectId,
   };
   const docRef = await addDoc(tasksRef, newTask);
   return { id: docRef.id, ...newTask };
 };
 
-export const getTasks = async (uid: string) => {
+export const getTasks = async (uid: string, projectId: string) => {
   const tasksRef = collection(db, "tasks");
   const q = query(
     tasksRef,
     where("uid", "==", uid),
+    where("projectId", "==", projectId),
     orderBy("dueDate", "desc")
   );
   const snapshot = await getDocs(q);
