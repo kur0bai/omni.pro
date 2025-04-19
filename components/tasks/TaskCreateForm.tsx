@@ -20,7 +20,7 @@ export function CreateTaskForm() {
   const { mode, setShowModal } = useTaskStore();
 
   return (
-    <div className="bg-white shadow-md rounded-lg px-8 py-8 border border-gray-300">
+    <div className="bg-white shadow-md rounded-lg px-8 py-8 border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-white">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -49,7 +49,7 @@ export function CreateTaskForm() {
                 name="title"
                 type="text"
                 placeholder="Título de la tarea"
-                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:bg-gray-700 dark:hover:bg-gray-600"
               />
               <ErrorMessage
                 name="title"
@@ -65,7 +65,7 @@ export function CreateTaskForm() {
                 id="description"
                 name="description"
                 type="text"
-                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:bg-gray-700 dark:hover:bg-gray-600"
                 placeholder="Descripción de la tarea"
               />
               <ErrorMessage
@@ -82,7 +82,7 @@ export function CreateTaskForm() {
                 id="priority"
                 name="priority"
                 placeholder="Prioridad"
-                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:bg-gray-700 dark:hover:bg-gray-600"
               >
                 {PRIORITY_LIST.map((priority) => (
                   <option
@@ -108,7 +108,7 @@ export function CreateTaskForm() {
                 id="status"
                 name="status"
                 placeholder="Estado"
-                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:bg-gray-700 dark:hover:bg-gray-600"
               >
                 {STATUS_LIST.map((priority) => (
                   <option
@@ -133,7 +133,7 @@ export function CreateTaskForm() {
                 id="dueDate"
                 name="dueDate"
                 type="date"
-                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
+                className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:bg-gray-700 dark:hover:bg-gray-600"
               />
               <ErrorMessage
                 name="dueDate"

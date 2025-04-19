@@ -1,5 +1,11 @@
 @import "tailwindcss";
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+.dark\:text-white {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    color: var(--color-white);
+  }
+}
 
 body {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif; scrollbar-color: #b9b9b9 #f7f7f7;

@@ -18,7 +18,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
   return (
     <div
       key={task.id}
-      className="border border-gray-300 bg-white px-4 py-4 rounded-lg shadow-sm lg:max-w-full flex flex-col"
+      className="border border-gray-300 bg-white px-4 py-4 rounded-lg shadow-sm lg:max-w-full flex flex-col dark:bg-gray-800 dark:border-gray-700 dark:text-white"
     >
       {/* actions buttons */}
       <div className="">
@@ -48,13 +48,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         <h2 className="font-semibold">{task.title}</h2>
       </div>
 
-      <hr className="text-gray-100" />
+      <hr className="text-gray-100 dark:text-gray-700" />
 
       <div className="my-2">
-        <p className="text-gray-600">{task.description}</p>
+        <p className="text-gray-600 dark:text-gray-200">{task.description}</p>
       </div>
 
-      <div className="text-sm text-gray-600 flex flex-col gap-1 border-t border-gray-100 pt-4">
+      <div className="text-sm text-gray-600 dark:text-gray-400 flex flex-col gap-1 border-t border-gray-100 pt-4 dark:border-gray-700">
         <p>
           Creada en:{" "}
           <strong className="capitalize">

@@ -6,6 +6,7 @@ import { CreateTaskForm } from "@/components/tasks/TaskCreateForm";
 import { TaskCard } from "@/components/tasks/TaskCard";
 import { useTaskStore } from "@/store/tasks.store";
 import { ProjectsPanel } from "@/components/projects/ProjectsPanel";
+import { ThemePicker } from "@/components/core/ThemePicker";
 
 const Dashboard = () => {
   const {
@@ -22,10 +23,14 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       {/* side */}
-      <div className="w-full lg:w-[20%] min-w-[220px] h-[300px] lg:h-screen bg-white border-r border-gray-100 shadow-sm block lg:fixed flex flex-col items-center justify-center px-4 lg:py-auto py-2">
+      <div className="w-full lg:w-[20%] min-w-[220px] h-[300px] lg:h-screen bg-white border-r border-gray-100 shadow-sm block lg:fixed flex flex-col items-center justify-center px-4 lg:py-auto py-2 dark:bg-gray-800 dark:text-white dark:border-gray-700">
         <img src={"/logo.png"} alt="Logo" className="w-24 mb-4" />
+
+        <ThemePicker />
         <h1 className="text-lg font-bold">Bienvenido</h1>
-        <p className="text-gray-500 text-center">Administra tus tareas aquí</p>
+        <p className="text-gray-500 text-center dark:text-gray-500">
+          Administra tus tareas aquí
+        </p>
 
         <button
           onClick={() => {
@@ -39,9 +44,11 @@ const Dashboard = () => {
       </div>
 
       {/* main content */}
-      <div className="w-full flex-1 lg:ml-[20%] min-h-screen bg-gray-50 p-8">
+      <div className="w-full flex-1 lg:ml-[20%] min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-2xl font-bold mb-6">Tus Tareas</h1>
+          <h1 className="text-2xl font-bold mb-6 dark:text-white">
+            Tus Tareas
+          </h1>
 
           {/* projects */}
           <ProjectsPanel />

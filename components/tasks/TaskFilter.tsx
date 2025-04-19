@@ -22,17 +22,17 @@ export function TaskFilters({
   const { setShowModal, setMode, clearSelectedTask } = useTaskStore();
 
   return (
-    <div className="flex gap-5 mb-6 items-center bg-white p-4 rounded-lg  border border-gray-300">
+    <div className="flex gap-5 mb-6 items-center bg-white p-4 rounded-lg border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-white">
       <div>
         <ListFilter size={20} className="text-gray-500" />
       </div>
 
       <div>
-        <label>Prioridad: </label>
+        <label className="dark:text-gray-400">Prioridad: </label>
         <select
           value={priorityFilter}
           onChange={(e) => setPriorityFilter(e.target.value)}
-          className="border py-1 px-4 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="border py-1 px-4 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:bg-gray-700 dark:hover:bg-gray-600"
         >
           <option
             value="all"
@@ -53,11 +53,11 @@ export function TaskFilters({
       </div>
 
       <div>
-        <label>Estado: </label>
+        <label className="dark:text-gray-400">Estado: </label>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="border py-1 px-4 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className="border py-1 px-4 rounded bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:bg-gray-700 dark:hover:bg-gray-600"
         >
           <option
             value="all"

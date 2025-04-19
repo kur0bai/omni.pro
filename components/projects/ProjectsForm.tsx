@@ -26,7 +26,7 @@ export const ProjectsCreate = () => {
           <Form className="grid gap-4 relative">
             {/* content */}
 
-            <div className="flex flex-col">
+            <div className="flex flex-col dark:text-gray-500">
               <label htmlFor="name">Nombre</label>
               <div className="flex flex-col items-center">
                 <div className="flex flex-row gap-4">
@@ -35,7 +35,7 @@ export const ProjectsCreate = () => {
                     name="name"
                     type="text"
                     placeholder="Nombre del proyecto"
-                    className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600"
+                    className="px-4 p-2 w-full bg-gray-50 focus:bg-white hover:bg-white rounded-lg border border-gray-200 focus:outline-none hover:outline-none duration-200 text-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:bg-gray-700 dark:hover:bg-gray-600"
                   />
                   <button type="submit" disabled={isLoading}>
                     {isLoading ? (

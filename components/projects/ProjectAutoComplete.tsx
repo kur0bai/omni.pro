@@ -4,7 +4,7 @@ import React from "react";
 export const ProjectAutoComplete = () => {
   const { selectedProject, setSelectedProject, projects } = useProjectsStore();
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col dark:text-gray-500">
       <label htmlFor="project">Selecciona un proyecto</label>
       <select
         value={selectedProject ? selectedProject.id : ""}
@@ -14,7 +14,7 @@ export const ProjectAutoComplete = () => {
           );
           setSelectedProject(selected || null);
         }}
-        className="border py-2.5 px-4 rounded-lg bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        className="border py-2.5 px-4 rounded-lg bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option value="">Crear un proyecto</option>
         {projects.map((project) => (
