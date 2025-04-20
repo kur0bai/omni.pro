@@ -66,6 +66,16 @@ Using push notifications to notice about the expiring tasks is a good idea but I
 
 ![enter image description here](https://i.imgur.com/8dW8R7Y.png)
 
+### Unit Testing
+
+I'll using some test in projects service logic, you can check it out and improve it.
+We are using the classic jest to tests so I added the basic scripts to run them.
+
+```
+npm run test
+npm run test:watch #if you wanna check in real time
+```
+
 ### Thanks!
 
 This should work!
