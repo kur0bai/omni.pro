@@ -10,7 +10,7 @@ interface TaskCardProps {
   task: ITask;
 }
 
-export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+const TaskCardComponent: React.FC<TaskCardProps> = ({ task }) => {
   const { getPriorityColor, getStatusIcon } = useTaskDetailVM();
   const { handleDelete } = useTasksVM();
   const { setSelectedTask, clearSelectedTask, setMode, setShowModal } =
@@ -95,3 +95,4 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
     </div>
   );
 };
+export const TaskCard = React.memo(TaskCardComponent);
